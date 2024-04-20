@@ -13,6 +13,12 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
+    "dev": "concurrently \"npm start\" \"npm run posts\" \"npm run event-bus\" \"npm run moderation\" \"npm run query\"",
+    "comments":"npm start --prefix ../comments",
+    "posts":"npm start --prefix ../posts",
+    "event-bus":"npm start --prefix ../event-bus",
+    "moderation":"npm start --prefix ../moderation",
+    "query":"npm start --prefix ../query",
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
