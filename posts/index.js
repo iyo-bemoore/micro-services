@@ -1,37 +1,37 @@
-const express = require("express");
-const { randomBytes } = require("crypto");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+const express = require('express');
+const { randomBytes } = require('crypto');
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const app = express();
-const axios = require("axios");
+const axios = require('axios');
 const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(cors());
 
 const posts = {};
 
-app.get("/posts", (req, res) => {
+app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
-app.post("/posts", async (req, res) => {
-  const id = randomBytes(4).toString("hex");
+app.post('/posts/create', async (req, res) => {
+  const id = randomBytes(4).toString('hex');
   const { title } = req.body;
   posts[id] = {
     id,
     title,
   };
   await axios
-    .post("http://event-bus-srv:4005/events", {
-      type: "PostCreated",
+    .post('http://event-bus-srv:4005/events', {
+      type: 'PostCreated',
       data: { id, title },
     })
-    .catch((e) => console.log("Error", e));
+    .catch(e => console.log('Error', e));
   res.status(201).send(posts[id]);
 });
 
-app.post("/events", (req, res) => {
-  console.log("Received Event", req.body.type);
+app.post('/events', (req, res) => {
+  console.log('Received Event', req.body.type);
   res.send({});
 });
 
